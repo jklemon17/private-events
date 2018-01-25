@@ -1,0 +1,6 @@
+Event name: <%= @event.name %><br>
+Event date: <%= @event.date %><br>
+Event location: <%= @event.location %><br>
+Created by: <%= User.find_by(id: @event.creator_id).name %><br>
+
+<%= link_to 'Invite people', new_event_invite_path %>

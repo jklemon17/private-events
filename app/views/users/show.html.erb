@@ -1,0 +1,5 @@
+<%= @user.name %><br>
+<%= @user.email %><br>
+<% if current_user?(User.find_by(id: params[:id])) %>
+  <%= link_to('Create a new event', new_event_path) %>
+<% end %>
