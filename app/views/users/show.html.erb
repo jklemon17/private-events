@@ -1,5 +1,53 @@
 <%= @user.name %><br>
-<%= @user.email %><br>
-<% if current_user?(User.find_by(id: params[:id])) %>
-  <%= link_to('Create a new event', new_event_path) %>
+<%= @user.email %><br><br>
+<% if current_user?(User.find_by(id: params[:id])) || params[:id].nil? %>
+  <h3><%= link_to('Create a new event', new_event_path) %></h3>
+
+  <% if @invites %>
+    <h3>Invites</h3>
+    <% @invites.each do |e| %>
+      <div>
+        You have been invited to:<br>
+        Name: <%= link_to e.name, e %><br>
+        Date: <%= e.date.to_formatted_s(:long_ordinal) %><br>
+        Place: <%= e.location %><br>
+        <%= link_to 'Accept Invite', edit_event_invite_path(e, event_id: e.id, user_id: @user.id)%>
+      </div><br>
+      <% end %>
+    <% end %>
+
+  <% if @upcoming_events %>
+    <h3>Upcoming Events:</h3>
+    <% @upcoming_events.each do |e| %>
+      <div>
+        Name: <%= link_to e.name, e %><br>
+        Date: <%= e.date.to_formatted_s(:long_ordinal) %><br>
+        Place: <%= e.location %><br>
+        <%= link_to 'Change your mind', edit_event_invite_path(e, event_id: e.id, user_id: @user.id)%>
+      </div><br>
+      <% end %>
+    <% end %>
+
+  <% if @past_events %>
+    <h3>Past Events:</h3>
+    <% @past_events.each do |e| %>
+      <div>
+        Name: <%= link_to e.name, e %><br>
+        Date: <%= e.date.to_formatted_s(:long_ordinal) %><br>
+        Place: <%= e.location %><br>
+        <%= link_to 'Change your mind', edit_event_invite_path(e, event_id: e.id, user_id: @user.id)%>
+      </div><br>
+      <% end %>
+    <% end %>
+
+  <% if @user.created_events.size > 0 %>
+    <h3><br>Your Created Events</h3><br>
+    <% @user.created_events.order(:date).each do |e| %>
+      <div>
+        Name: <%= link_to(e.name, e) %><br>
+        Date: <%= e.date.to_formatted_s(:long_ordinal) %><br>
+        Place: <%= e.location %><br>
+      </div><br>
+    <% end %>
+  <% end %>
 <% end %>

@@ -1,1 +1,9 @@
-Invite people to your event!
+<h3>Invite people to your event!</h3>
+<%= form_for(@event_invite) do |f| %>
+  <% User.all.each do |u| %>
+    <% next if @event.event_invites.where(event_invitee_id: u).any? %>
+    <%= f.check_box(:event_invitee, {:multiple => true}, u.id.to_s, nil) %>
+    <%= f.label(:event_invitee, u.name) %><br>
+  <% end %><br>
+  <%= f.submit('Send Invitations') %>
+<% end %>

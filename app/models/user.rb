@@ -1,7 +1,7 @@
 class User < ApplicationRecord
-  has_many :event_invites, :foreign_key => :invitee_id
-  has_many :events, :through => :event_invites
-  has_many :created_events, :foreign_key => "creator_id", :class_name => "Event"
+  has_many :created_events, foreign_key: "creator_id", class_name: "Event"
+  has_many :event_invites, foreign_key: :event_invitee_id
+  has_many :attending_events, through: :event_invites
 
   has_secure_password
 

@@ -1,6 +1,26 @@
 Event name: <%= @event.name %><br>
 Event date: <%= @event.date %><br>
 Event location: <%= @event.location %><br>
-Created by: <%= User.find_by(id: @event.creator_id).name %><br>
+Created by: <%= User.find_by(id: @event.creator_id).name %><br><br>
 
-<%= link_to 'Invite people', new_event_invite_path %>
+<% if current_user?(User.find_by(id: @event.creator_id)) %>
+  <%= link_to 'Invite people', new_event_invite_path %>
+<% end %>
+
+<% if @event.event_invites.any? %>
+  <h3> Invited: </h3>
+  <% @event.event_invites.all.each do |i| %>
+    <div>
+      <%= User.find_by(id: i.event_invitee_id).name %>
+    </div>
+  <% end %>
+<% end %>
+
+<% if @event.event_invites.where(accepted: true).any? %>
+  <h3> Attending: </h3>
+  <% @event.event_invites.where(accepted: true).each do |i| %>
+    <div>
+      <%= User.find_by(id: i.event_invitee_id).name %>
+    </div>
+  <% end %>
+<% end %>

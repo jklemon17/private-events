@@ -20,6 +20,18 @@ class UsersController < ApplicationController
       else
         @user = current_user
       end
+
+      if @user.attending_events.where("event_invites.accepted" => false).size > 0
+        @invites = @user.attending_events.where("event_invites.accepted" => false).order(:date)
+      end
+
+      if @user.attending_events.where("event_invites.accepted" => true).where("date < ?", Date.today).size > 0
+        @past_events = @user.attending_events.where("event_invites.accepted" => true).where("date < ?", Date.today).order(date: "DESC")
+      end
+
+      if @user.attending_events.where("event_invites.accepted" => true).where("date >= ?", Date.today).size > 0
+        @upcoming_events = @user.attending_events.where("event_invites.accepted" => true).where("date >= ?", Date.today).order(:date)
+      end
     else
       redirect_to new_user_path
     end
@@ -30,7 +42,7 @@ class UsersController < ApplicationController
   def correct_user
     current_user.id == params[:id]
   end
-  
+
   private
 
   def get_user

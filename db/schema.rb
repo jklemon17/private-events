@@ -10,16 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180124185551) do
+ActiveRecord::Schema.define(version: 20180125205801) do
 
   create_table "event_invites", force: :cascade do |t|
-    t.integer "event_id"
-    t.integer "invitee_id"
+    t.integer "attending_event_id"
+    t.integer "event_invitee_id"
     t.boolean "accepted"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["event_id"], name: "index_event_invites_on_event_id"
-    t.index ["invitee_id"], name: "index_event_invites_on_invitee_id"
+    t.index ["attending_event_id"], name: "index_event_invites_on_attending_event_id"
+    t.index ["event_invitee_id"], name: "index_event_invites_on_event_invitee_id"
   end
 
   create_table "events", force: :cascade do |t|
